@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Printer Owner Dashboard - CampusPrint</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="dashboard.html" class="logo">
+        <div class="logo-icon">CP</div>
+        <span class="logo-text gradient-text">CampusPrint</span>
+      </a>
+
+      <nav class="nav-menu">
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+          <button class="theme-toggle" title="Toggle theme"></button>
+          
+          <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; border-radius: 12px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);">
+            <!-- Credits Display -->
+            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--theme-text-secondary);">
+              <svg class="credit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+              <span class="user-credits">৳0.00</span>
+            </div>
+
+            <!-- Divider -->
+            <div style="width: 1px; height: 20px; background: var(--glass-border);"></div>
+
+            <!-- Username & Profile Button -->
+            <button class="profile-button" style="display: flex; align-items: center; gap: 0.6rem; border: none; background: none; cursor: pointer; padding: 0; color: var(--theme-text-primary); font-size: 0.95rem; font-weight: 500;">
+              <div class="profile-avatar" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); font-size: 0.85rem; font-weight: 600; color: white;">
+                <span>U</span>
+              </div>
+              <span class="user-username" style="font-weight: 600;">User</span>
+            </button>
+          </div>
+
+          <div class="profile-dropdown hidden">
+            <div class="profile-info">
+              <p class="profile-name">User Name</p>
+              <p class="profile-email">user@example.com</p>
+            </div>
+            <a href="dashboard.html" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"></path>
+              </svg>
+              Dashboard
+            </a>
+            <button class="dropdown-item danger logout-button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Printer Owner Dashboard</h1>
+      <p class="dashboard-subtitle">Manage your printers and track earnings</p>
+    </div>
+
+    <div class="dashboard-content container">
+      <!-- Quick Stats -->
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalPrinters">0</div>
+          <div class="stat-label">Total Printers</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="activeJobs">0</div>
+          <div class="stat-label">Active Jobs</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalEarnings">৳0.00</div>
+          <div class="stat-label">Total Earnings</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="monthEarnings">৳0.00</div>
+          <div class="stat-label">This Month Earnings</div>
+        </div>
+      </div>
+
+      <!-- My Printers Section -->
+      <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700;">My Printers</h2>
+          <button class="glass-button primary" onclick="router.navigate('/pages/printer-register.html')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Printer
+          </button>
+        </div>
+        <div id="printersList"></div>
+      </div>
+
+      <!-- Recent Print Jobs Section -->
+      <div class="glass-card" style="padding: 2rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Recent Print Jobs</h2>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <th style="padding: 1rem; text-align: left; font-weight: 600;">Job ID</th>
+                <th style="padding: 1rem; text-align: left; font-weight: 600;">Customer</th>
+                <th style="padding: 1rem; text-align: left; font-weight: 600;">Document</th>
+                <th style="padding: 1rem; text-align: left; font-weight: 600;">Pages</th>
+                <th style="padding: 1rem; text-align: left; font-weight: 600;">Status</th>
+                <th style="padding: 1rem; text-align: right; font-weight: 600;">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="jobsList"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/router.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  
+  <script>
+    // Check authentication and printer_owner role
+    if (!authManager.requireAuth()) {
+      // Will redirect to login if not authenticated
+    } else {
+      const user = authManager.user;
+      if (!user.roles.includes('printer_owner')) {
+        alert('Access denied. This page is only for printer owners.');
+        router.navigate('/pages/dashboard.html');
+      }
+    }
+
+    let ownerPrinters = [];
+    let ownerJobs = [];
+
+    // Load printer owner dashboard data
+    async function loadPrinterDashboardData() {
+      const printersResponse = await apiClient.listPrinters({ ownerId: authManager.user.id });
+      ownerPrinters = printersResponse.printers || [];
+
+      const jobsResponse = await apiClient.listPrintJobs();
+      const allJobs = jobsResponse.printJobs || [];
+      const ownerPrinterIds = ownerPrinters.map(printer => Number(printer.id));
+      ownerJobs = allJobs.filter(job => ownerPrinterIds.includes(Number(job.printerId)));
+
+      const totalPrinters = ownerPrinters.length;
+      const activePrinters = ownerPrinters.filter(p => p.status === 'active').length;
+      const activeJobs = ownerJobs.filter(j => j.status === 'in_progress' || j.status === 'pending').length;
+      const totalEarnings = ownerJobs.reduce((sum, j) => sum + Number(j.cost || 0), 0);
+      const monthEarnings = totalEarnings;
+
+      // Update stats
+      document.getElementById('totalPrinters').textContent = totalPrinters;
+      document.getElementById('activeJobs').textContent = activeJobs;
+      document.getElementById('totalEarnings').textContent = `৳${totalEarnings.toFixed(2)}`;
+      document.getElementById('monthEarnings').textContent = `৳${monthEarnings.toFixed(2)}`;
+
+      // Render printers list
+      renderPrinters();
+
+      // Render jobs list
+      renderJobs();
+    }
+
+    function getStatusBadge(status) {
+      const statusConfig = {
+        'active': { label: 'Active', color: 'var(--success)', bg: 'rgba(16, 185, 129, 0.1)' },
+        'pending_approval': { label: 'Pending Approval', color: 'var(--warning)', bg: 'rgba(251, 191, 36, 0.1)' },
+        'inactive': { label: 'Inactive', color: 'var(--theme-text-secondary)', bg: 'rgba(148, 163, 184, 0.1)' },
+        'completed': { label: 'Completed', color: 'var(--success)', bg: 'rgba(16, 185, 129, 0.1)' },
+        'in_progress': { label: 'In Progress', color: 'var(--primary)', bg: 'rgba(99, 102, 241, 0.1)' },
+        'pending': { label: 'Pending', color: 'var(--warning)', bg: 'rgba(251, 191, 36, 0.1)' }
+      };
+
+      const config = statusConfig[status] || statusConfig['inactive'];
+      return `<span style="padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 500; 
+                       background: ${config.bg}; color: ${config.color};">
+                ${config.label}
+              </span>`;
+    }
+
+    function renderPrinters() {
+      const printersList = document.getElementById('printersList');
+      
+      if (ownerPrinters.length === 0) {
+        printersList.innerHTML = `
+          <p style="text-align: center; color: var(--theme-text-secondary); padding: 2rem;">
+            No printers registered yet. Click "Add Printer" to get started.
+          </p>
+        `;
+        return;
+      }
+
+      printersList.innerHTML = ownerPrinters.map(printer => `
+        <div style="padding: 1.5rem; border: 1px solid var(--glass-border); border-radius: 12px; margin-bottom: 1rem; 
+                    background: rgba(255, 255, 255, 0.02);">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0;">${printer.name}</h3>
+                ${getStatusBadge(printer.status)}
+              </div>
+              <p style="color: var(--theme-text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">
+                ${printer.model}
+              </p>
+              <p style="color: var(--theme-text-secondary); font-size: 0.875rem; margin: 0.25rem 0; display: flex; align-items: center; gap: 0.25rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                ${printer.location}
+              </p>
+            </div>
+            <div style="text-align: right;">
+              <p style="font-size: 0.875rem; color: var(--theme-text-secondary); margin-bottom: 0.25rem;">Earnings</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: var(--success); margin: 0;">
+                ৳${Number(printer.pricePerPage || 0).toFixed(2)} /page
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="glass-button secondary" onclick="editPrinter(${printer.id})" style="flex: 1;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Edit
+            </button>
+            <button class="glass-button primary" onclick="viewJobs(${printer.id})" style="flex: 1;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              View Jobs
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderJobs() {
+      const jobsList = document.getElementById('jobsList');
+      
+      if (ownerJobs.length === 0) {
+        jobsList.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: var(--theme-text-secondary); padding: 2rem;">
+              No print jobs yet
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      jobsList.innerHTML = ownerJobs.map(job => `
+        <tr style="border-bottom: 1px solid var(--glass-border);">
+          <td style="padding: 1rem; font-weight: 500;">JOB-${job.id}</td>
+          <td style="padding: 1rem;">User #${job.userId}</td>
+          <td style="padding: 1rem; color: var(--theme-text-secondary);">${job.fileName}</td>
+          <td style="padding: 1rem;">${job.pages}</td>
+          <td style="padding: 1rem;">${getStatusBadge(job.status)}</td>
+          <td style="padding: 1rem; text-align: right; font-weight: 600;">৳${Number(job.cost || 0).toFixed(2)}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function editPrinter(printerId) {
+      const printer = ownerPrinters.find(item => Number(item.id) === Number(printerId));
+      if (!printer) return;
+
+      const nextPrice = prompt('Update price per page', String(printer.pricePerPage));
+      if (nextPrice === null) return;
+
+      const nextStatus = prompt('Update status (active/inactive/pending)', printer.status);
+      if (nextStatus === null) return;
+
+      try {
+        await apiClient.updatePrinter(printerId, {
+          pricePerPage: Number(nextPrice),
+          status: nextStatus,
+        });
+        await loadPrinterDashboardData();
+      } catch (error) {
+        alert(error.message || 'Failed to update printer.');
+      }
+    }
+
+    function viewJobs(printerId) {
+      const filtered = ownerJobs.filter(job => Number(job.printerId) === Number(printerId));
+      alert(`Printer ${printerId} has ${filtered.length} jobs.`);
+    }
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPrinterDashboardData().catch(error => {
+        console.error('Failed to load printer dashboard:', error);
+      });
+      authManager.updateUI();
+    });
+  </script>
+</body>
+</html>
