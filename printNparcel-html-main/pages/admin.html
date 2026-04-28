@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - CampusPrint</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .admin-dashboard {
+      padding: 5rem 0 2rem;
+      min-height: 100vh;
+    }
+
+    .admin-header {
+      margin-bottom: 2rem;
+    }
+
+    .admin-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #22c55e;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--theme-text-secondary);
+      font-weight: 500;
+    }
+
+    .tab-navigation {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--glass-border);
+      padding-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--theme-text-secondary);
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .tab-button.active {
+      color: var(--primary);
+      background: var(--glass-bg);
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .search-bar {
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--theme-text);
+      font-size: 1rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 1rem;
+      font-weight: 600;
+      color: var(--theme-text-secondary);
+      border-bottom: 2px solid var(--glass-border);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .data-table tr:hover {
+      background: var(--glass-bg);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-badge.active {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.inactive {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .status-badge.pending {
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--warning);
+    }
+
+    .status-badge.approved {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.rejected {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .status-badge.completed {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.processing {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(147, 51, 234, 0.1);
+      color: #9333ea;
+    }
+
+    .role-badge.admin {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-view {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .btn-edit {
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--warning);
+    }
+
+    .btn-approve {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .btn-reject {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .btn-sm:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.2);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      padding: 0.75rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--theme-text);
+      font-size: 0.875rem;
+      cursor: pointer;
+      backdrop-filter: blur(20px);
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .settings-form {
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--theme-text-secondary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--theme-text);
+      font-size: 1rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .printer-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(20px);
+    }
+
+    .printer-info h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .printer-details {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.875rem;
+      color: var(--theme-text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    .order-card {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(20px);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .order-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .order-detail-item {
+      color: var(--theme-text-secondary);
+    }
+
+    .order-detail-item strong {
+      color: var(--theme-text);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .data-table {
+        font-size: 0.875rem;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="dashboard.html" class="logo">
+        <div class="logo-icon">CP</div>
+        <span class="logo-text gradient-text">CampusPrint</span>
+      </a>
+
+      <nav class="nav-menu">
+        <button class="theme-toggle" title="Toggle theme"></button>
+        
+        <div class="profile-menu">
+          <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; border-radius: 12px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);">
+          <!-- Credits Display -->
+          <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--theme-text-secondary);">
+            <svg class="credit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+            <span class="user-credits">৳0.00</span>
+          </div>
+
+          <!-- Divider -->
+          <div style="width: 1px; height: 20px; background: var(--glass-border);"></div>
+
+          <!-- Username & Profile Button -->
+          <button class="profile-button" style="display: flex; align-items: center; gap: 0.6rem; border: none; background: none; cursor: pointer; padding: 0; color: var(--theme-text-primary); font-size: 0.95rem; font-weight: 500;">
+            <div class="profile-avatar" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); font-size: 0.85rem; font-weight: 600; color: white;">
+              <span>A</span>
+            </div>
+            <span class="user-username" style="font-weight: 600;">Admin</span>
+          </button>
+          </div>
+
+          <div class="profile-dropdown hidden">
+            <div class="profile-info">
+              <p class="profile-name">Admin Name</p>
+              <p class="profile-email">admin@campusprint.com</p>
+            </div>
+            <div class="custom-dropdown-items" style="padding: 0.75rem 0;">
+              <!-- Dynamic items injected by authManager -->
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Admin Dashboard Content -->
+  <div class="admin-dashboard">
+    <div class="container">
+      <div class="admin-header">
+        <h1 class="admin-title" style="text-align: center;">Admin Dashboard</h1>
+        <p class="dashboard-subtitle" style="text-align: center;">Manage users, printers, orders and platform settings</p>
+      </div>
+
+      <!-- Overview Stats -->
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalUsers">248</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalPrinters">42</div>
+          <div class="stat-label">Total Printers</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalOrders">1,523</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+        
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="totalRevenue">৳45,890</div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-value" id="adminCredits">৳12,500</div>
+          <div class="stat-label">Admin Credits</div>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="glass-card" style="padding: 2rem;">
+        <div class="tab-navigation">
+          <button class="tab-button active" data-tab="users">Users</button>
+          <button class="tab-button" data-tab="printers">Printers</button>
+          <button class="tab-button" data-tab="orders">Orders</button>
+          <button class="tab-button" data-tab="settings">Settings</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-content active" id="users-tab">
+          <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search users by name or email..." id="userSearch">
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Joined Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr>
+                  <td>John Doe</td>
+                  <td>john.doe@student.edu</td>
+                  <td><span class="role-badge">Student</span></td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Jan 15, 2024</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('1')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('1')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Sarah Johnson</td>
+                  <td>sarah.j@campusprint.com</td>
+                  <td><span class="role-badge">Printer Owner</span></td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Dec 20, 2023</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('2')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('2')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Michael Chen</td>
+                  <td>m.chen@student.edu</td>
+                  <td><span class="role-badge">Student</span></td>
+                  <td><span class="status-badge inactive">Inactive</span></td>
+                  <td>Nov 8, 2023</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('3')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('3')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Emily Brown</td>
+                  <td>emily.b@student.edu</td>
+                  <td><span class="role-badge">Student</span></td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Feb 3, 2024</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('4')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('4')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>David Wilson</td>
+                  <td>d.wilson@campusprint.com</td>
+                  <td><span class="role-badge">Printer Owner</span></td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Oct 12, 2023</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('5')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('5')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Lisa Martinez</td>
+                  <td>lisa.m@student.edu</td>
+                  <td><span class="role-badge admin">Admin</span></td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Sep 1, 2023</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-sm btn-view" onclick="viewUser('6')">View</button>
+                      <button class="btn-sm btn-edit" onclick="editUser('6')">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Printers Tab -->
+        <div class="tab-content" id="printers-tab">
+          <div id="printersContainer">
+            <div class="printer-card">
+              <div class="printer-info">
+                <h3>QuickPrint Express</h3>
+                <div class="printer-details">
+                  <span>Owner: Sarah Johnson</span>
+                  <span>Location: Building A, Room 101</span>
+                  <span><span class="status-badge approved">Approved</span></span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-sm btn-view" onclick="viewPrinter('1')">View</button>
+                <button class="btn-sm btn-edit" onclick="editPrinter('1')">Edit</button>
+              </div>
+            </div>
+
+            <div class="printer-card">
+              <div class="printer-info">
+                <h3>Campus Print Hub</h3>
+                <div class="printer-details">
+                  <span>Owner: David Wilson</span>
+                  <span>Location: Library, 2nd Floor</span>
+                  <span><span class="status-badge pending">Pending</span></span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-sm btn-approve" onclick="approvePrinter('2')">Approve</button>
+                <button class="btn-sm btn-reject" onclick="rejectPrinter('2')">Reject</button>
+                <button class="btn-sm btn-view" onclick="viewPrinter('2')">View</button>
+              </div>
+            </div>
+
+            <div class="printer-card">
+              <div class="printer-info">
+                <h3>Student Print Services</h3>
+                <div class="printer-details">
+                  <span>Owner: John Smith</span>
+                  <span>Location: Building C, Ground Floor</span>
+                  <span><span class="status-badge approved">Approved</span></span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-sm btn-view" onclick="viewPrinter('3')">View</button>
+                <button class="btn-sm btn-edit" onclick="editPrinter('3')">Edit</button>
+              </div>
+            </div>
+
+            <div class="printer-card">
+              <div class="printer-info">
+                <h3>Fast Print Zone</h3>
+                <div class="printer-details">
+                  <span>Owner: Amanda Lee</span>
+                  <span>Location: Cafeteria Area</span>
+                  <span><span class="status-badge pending">Pending</span></span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-sm btn-approve" onclick="approvePrinter('4')">Approve</button>
+                <button class="btn-sm btn-reject" onclick="rejectPrinter('4')">Reject</button>
+                <button class="btn-sm btn-view" onclick="viewPrinter('4')">View</button>
+              </div>
+            </div>
+
+            <div class="printer-card">
+              <div class="printer-info">
+                <h3>Academic Prints</h3>
+                <div class="printer-details">
+                  <span>Owner: Robert Taylor</span>
+                  <span>Location: Building B, Room 205</span>
+                  <span><span class="status-badge rejected">Rejected</span></span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-sm btn-view" onclick="viewPrinter('5')">View</button>
+                <button class="btn-sm btn-edit" onclick="editPrinter('5')">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div class="tab-content" id="orders-tab">
+          <div class="filter-bar">
+            <select class="filter-select" id="orderStatusFilter">
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div id="ordersContainer">
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1523</h3>
+                <span class="status-badge completed">Completed</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  John Doe
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  QuickPrint Express
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳45.00
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 10, 2024
+                </div>
+              </div>
+            </div>
+
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1522</h3>
+                <span class="status-badge processing">Processing</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  Emily Brown
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  Campus Print Hub
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳78.50
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 10, 2024
+                </div>
+              </div>
+            </div>
+
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1521</h3>
+                <span class="status-badge pending">Pending</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  Michael Chen
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  Student Print Services
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳32.00
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 9, 2024
+                </div>
+              </div>
+            </div>
+
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1520</h3>
+                <span class="status-badge completed">Completed</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  Sarah Johnson
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  QuickPrint Express
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳125.00
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 9, 2024
+                </div>
+              </div>
+            </div>
+
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1519</h3>
+                <span class="status-badge completed">Completed</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  David Wilson
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  Student Print Services
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳56.50
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 8, 2024
+                </div>
+              </div>
+            </div>
+
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order #1518</h3>
+                <span class="status-badge processing">Processing</span>
+              </div>
+              <div class="order-details">
+                <div class="order-detail-item">
+                  <strong>Customer</strong>
+                  Lisa Martinez
+                </div>
+                <div class="order-detail-item">
+                  <strong>Printer</strong>
+                  Campus Print Hub
+                </div>
+                <div class="order-detail-item">
+                  <strong>Amount</strong>
+                  ৳92.00
+                </div>
+                <div class="order-detail-item">
+                  <strong>Date</strong>
+                  Mar 8, 2024
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings-tab">
+          <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Platform Settings</h2>
+          <p style="color: var(--theme-text-secondary); margin-bottom: 2rem;">These settings control the overall platform behavior. (Demo mode - read only)</p>
+          
+          <form class="settings-form">
+            <div class="form-group">
+              <label class="form-label">Platform Commission Rate (%)</label>
+              <input type="number" class="form-input" value="10" disabled>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Minimum Order Amount (৳)</label>
+              <input type="number" class="form-input" value="20" disabled>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Maximum Order Amount (৳)</label>
+              <input type="number" class="form-input" value="5000" disabled>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Default Delivery Time (minutes)</label>
+              <input type="number" class="form-input" value="30" disabled>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Support Email</label>
+              <input type="email" class="form-input" value="support@campusprint.com" disabled>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Platform Status</label>
+              <select class="form-input" disabled>
+                <option selected>Active</option>
+                <option>Maintenance</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">New Printer Auto-Approval</label>
+              <select class="form-input" disabled>
+                <option>Manual Review</option>
+                <option selected>Auto-Approve</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Maximum File Size (MB)</label>
+              <input type="number" class="form-input" value="50" disabled>
+            </div>
+
+            <button type="button" class="glass-button primary" style="margin-top: 1rem;" disabled>Save Settings (Demo)</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/router.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    let adminUsers = [];
+    let adminPrinters = [];
+    let adminJobs = [];
+    const fallbackStats = {
+      totalUsers: 487,
+      totalPrinters: 23,
+      totalOrders: 1247,
+      totalRevenue: 89450,
+      adminCredits: 12500,
+    };
+
+    function getRoleBadge(user) {
+      if ((user.roles || []).includes('admin')) return '<span class="role-badge admin">Admin</span>';
+      if ((user.roles || []).includes('printer_owner')) return '<span class="role-badge">Printer Owner</span>';
+      return '<span class="role-badge">User</span>';
+    }
+
+    function getStatusBadge(status) {
+      const normalized = (status || '').toLowerCase();
+      return `<span class="status-badge ${normalized || 'active'}">${normalized || 'active'}</span>`;
+    }
+
+    function renderUsers() {
+      const table = document.getElementById('usersTableBody');
+      table.innerHTML = adminUsers.map(user => `
+        <tr>
+          <td>${user.firstName || ''} ${user.lastName || ''}</td>
+          <td>${user.email}</td>
+          <td>${getRoleBadge(user)}</td>
+          <td><span class="status-badge active">Active</span></td>
+          <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-sm btn-view" onclick="viewUser('${user.id}')">View</button>
+              <button class="btn-sm btn-edit" onclick="editUser('${user.id}')">Edit</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderPrinters() {
+      const container = document.getElementById('printersContainer');
+      container.innerHTML = adminPrinters.map(printer => `
+        <div class="printer-card">
+          <div class="printer-info">
+            <h3>${printer.name}</h3>
+            <div class="printer-details">
+              <span>Owner ID: ${printer.ownerId}</span>
+              <span>Location: ${printer.location}</span>
+              <span>${getStatusBadge(printer.status)}</span>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn-sm btn-approve" onclick="approvePrinter('${printer.id}')">Approve</button>
+            <button class="btn-sm btn-reject" onclick="rejectPrinter('${printer.id}')">Reject</button>
+            <button class="btn-sm btn-edit" onclick="editPrinter('${printer.id}')">Edit</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderOrders(statusFilter = 'all') {
+      const container = document.getElementById('ordersContainer');
+      const jobs = statusFilter === 'all'
+        ? adminJobs
+        : adminJobs.filter(job => (job.status || '').toLowerCase() === statusFilter.toLowerCase());
+
+      container.innerHTML = jobs.map(job => `
+        <div class="order-card">
+          <div class="order-header">
+            <h3>Order #${job.id}</h3>
+            ${getStatusBadge(job.status)}
+          </div>
+          <div class="order-details">
+            <div class="order-detail-item"><strong>User</strong>User #${job.userId}</div>
+            <div class="order-detail-item"><strong>Printer</strong>Printer #${job.printerId}</div>
+            <div class="order-detail-item"><strong>Amount</strong>৳${Number(job.cost || 0).toFixed(2)}</div>
+            <div class="order-detail-item"><strong>Date</strong>${new Date(job.createdAt).toLocaleString()}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function loadAdminData() {
+      const [statsRes, usersRes, printersRes, jobsRes] = await Promise.all([
+        apiClient.getAdminStats(),
+        apiClient.listAllUsers(),
+        apiClient.listAllPrinters(),
+        apiClient.listPrintJobs(),
+      ]);
+
+      const stats = statsRes.stats || {};
+      adminUsers = usersRes.users || [];
+      adminPrinters = printersRes.printers || [];
+      adminJobs = jobsRes.printJobs || [];
+
+      const totalUsers = Number(stats.totalUsers ?? adminUsers.length ?? fallbackStats.totalUsers);
+      const totalPrinters = Number(stats.totalPrinters ?? adminPrinters.length ?? fallbackStats.totalPrinters);
+      const totalOrders = Number(stats.totalOrders ?? stats.totalPrintJobs ?? adminJobs.length ?? fallbackStats.totalOrders);
+      const totalRevenue = Number(stats.totalRevenue ?? fallbackStats.totalRevenue);
+      const adminCredits = Number(stats.adminCredits ?? stats.totalCreditsInSystem ?? fallbackStats.adminCredits);
+
+      document.getElementById('totalUsers').textContent = totalUsers;
+      document.getElementById('totalPrinters').textContent = totalPrinters;
+      document.getElementById('totalOrders').textContent = totalOrders;
+      document.getElementById('totalRevenue').textContent = `৳${totalRevenue.toLocaleString()}`;
+      const adminCreditsEl = document.getElementById('adminCredits');
+      if (adminCreditsEl) {
+        adminCreditsEl.textContent = `৳${adminCredits.toLocaleString()}`;
+      }
+
+      renderUsers();
+      renderPrinters();
+      renderOrders();
+    }
+
+    function viewUser(userId) {
+      const user = adminUsers.find(item => String(item.id) === String(userId));
+      if (!user) return;
+      alert(`${user.firstName || ''} ${user.lastName || ''}\nEmail: ${user.email}\nCredits: ৳${Number(user.credits || 0).toFixed(2)}\nRoles: ${(user.roles || []).join(', ')}`);
+    }
+
+    async function editUser(userId) {
+      const user = adminUsers.find(item => String(item.id) === String(userId));
+      if (!user) return;
+
+      const roleInput = prompt('Enter roles comma-separated (user,printer_owner,admin)', (user.roles || []).join(','));
+      if (roleInput === null) return;
+
+      const creditInput = prompt('Set credits', String(user.credits || 0));
+      if (creditInput === null) return;
+
+      const roles = roleInput.split(',').map(item => item.trim()).filter(Boolean);
+      try {
+        await apiClient.updateUserRoles(userId, roles);
+        await apiClient.adjustUserCredits(userId, Number(creditInput), 'set');
+        await loadAdminData();
+      } catch (error) {
+        alert(error.message || 'Failed to update user.');
+      }
+    }
+
+    function viewPrinter(printerId) {
+      const printer = adminPrinters.find(item => String(item.id) === String(printerId));
+      if (!printer) return;
+      alert(`${printer.name}\nModel: ${printer.model}\nLocation: ${printer.location}\nStatus: ${printer.status}`);
+    }
+
+    async function editPrinter(printerId) {
+      const printer = adminPrinters.find(item => String(item.id) === String(printerId));
+      if (!printer) return;
+      const status = prompt('Update status (active/inactive/pending)', printer.status);
+      if (status === null) return;
+      try {
+        await apiClient.updatePrinterStatus(printerId, status);
+        await loadAdminData();
+      } catch (error) {
+        alert(error.message || 'Failed to update printer.');
+      }
+    }
+
+    async function approvePrinter(printerId) {
+      try {
+        await apiClient.updatePrinterStatus(printerId, 'active');
+        await loadAdminData();
+      } catch (error) {
+        alert(error.message || 'Failed to approve printer.');
+      }
+    }
+
+    async function rejectPrinter(printerId) {
+      try {
+        await apiClient.updatePrinterStatus(printerId, 'inactive');
+        await loadAdminData();
+      } catch (error) {
+        alert(error.message || 'Failed to reject printer.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!authManager.isAuthenticated() || !authManager.user.roles.includes('admin')) {
+        alert('Access denied. Admin privileges required.');
+        router.navigate('/pages/login.html');
+        return;
+      }
+
+      authManager.updateUI();
+
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabName = button.getAttribute('data-tab');
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          button.classList.add('active');
+          document.getElementById(`${tabName}-tab`).classList.add('active');
+        });
+      });
+
+      const userSearch = document.getElementById('userSearch');
+      userSearch.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.getElementById('usersTableBody').getElementsByTagName('tr');
+        Array.from(rows).forEach(row => {
+          const name = row.cells[0]?.textContent.toLowerCase() || '';
+          const email = row.cells[1]?.textContent.toLowerCase() || '';
+          row.style.display = (name.includes(searchTerm) || email.includes(searchTerm)) ? '' : 'none';
+        });
+      });
+
+      const orderStatusFilter = document.getElementById('orderStatusFilter');
+      orderStatusFilter.addEventListener('change', (e) => renderOrders(e.target.value));
+
+      loadAdminData().catch(error => {
+        console.error('Failed to load admin data:', error);
+        alert(error.message || 'Failed to load admin dashboard data.');
+      });
+    });
+  </script>
+</body>
+</html>

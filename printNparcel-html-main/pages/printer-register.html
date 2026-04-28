@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Your Printer - CampusPrint</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="dashboard.html" class="logo">
+        <div class="logo-icon">CP</div>
+        <span class="logo-text gradient-text">CampusPrint</span>
+      </a>
+
+      <nav class="nav-menu">
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+          <button class="theme-toggle" title="Toggle theme"></button>
+          
+          <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; border-radius: 12px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);">
+            <!-- Credits Display -->
+            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--theme-text-secondary);">
+              <svg class="credit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+              <span class="user-credits">৳0.00</span>
+            </div>
+
+            <!-- Divider -->
+            <div style="width: 1px; height: 20px; background: var(--glass-border);"></div>
+
+            <!-- Username & Profile Button -->
+            <button class="profile-button" style="display: flex; align-items: center; gap: 0.6rem; border: none; background: none; cursor: pointer; padding: 0; color: var(--theme-text-primary); font-size: 0.95rem; font-weight: 500;">
+              <div class="profile-avatar" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); font-size: 0.85rem; font-weight: 600; color: white;">
+                <span>U</span>
+              </div>
+              <span class="user-username" style="font-weight: 600;">User</span>
+            </button>
+          </div>
+
+          <div class="profile-dropdown hidden">
+            <div class="profile-info">
+              <p class="profile-name">User Name</p>
+              <p class="profile-email">user@example.com</p>
+            </div>
+            <a href="dashboard.html" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"></path>
+              </svg>
+              Dashboard
+            </a>
+            <button class="dropdown-item danger logout-button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Register Your Printer</h1>
+      <p class="dashboard-subtitle">Share your printer and start earning</p>
+    </div>
+
+    <div class="dashboard-content container">
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+        <form id="printerRegisterForm">
+          <!-- Printer Name -->
+          <div class="form-group">
+            <label for="printerName" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              Printer Name
+            </label>
+            <input type="text" id="printerName" name="printerName" class="form-input" placeholder="e.g., My HP Laser Printer" required>
+          </div>
+
+          <!-- Brand/Model -->
+          <div class="form-group">
+            <label for="brandModel" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              Brand/Model
+            </label>
+            <input type="text" id="brandModel" name="brandModel" class="form-input" placeholder="e.g., HP LaserJet Pro M404n" required>
+          </div>
+
+          <!-- Printer Type -->
+          <div class="form-group">
+            <label for="printerType" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+              Printer Type
+            </label>
+            <select id="printerType" name="printerType" class="form-input" required>
+              <option value="">Select type...</option>
+              <option value="bw">Black & White</option>
+              <option value="color">Color</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
+
+          <!-- Location - University -->
+          <div class="form-group">
+            <label for="university" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              University
+            </label>
+            <input type="text" id="university" name="university" class="form-input" placeholder="e.g., CUET" required>
+          </div>
+
+          <!-- Location - Hall -->
+          <div class="form-group">
+            <label for="hall" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Hall/Building
+            </label>
+            <input type="text" id="hall" name="hall" class="form-input" placeholder="e.g., Kabi Kazi Nazrul Islam Hall" required>
+          </div>
+
+          <!-- Location - Room (Optional) -->
+          <div class="form-group">
+            <label for="room" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Room Number (Optional)
+            </label>
+            <input type="text" id="room" name="room" class="form-input" placeholder="e.g., Room 305">
+          </div>
+
+          <!-- Pricing Section -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <!-- Price B&W -->
+            <div class="form-group">
+              <label for="priceBW" class="form-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Price per B&W Page (৳)
+              </label>
+              <input type="number" id="priceBW" name="priceBW" class="form-input" placeholder="e.g., 2.00" step="0.50" min="0" required>
+            </div>
+
+            <!-- Price Color -->
+            <div class="form-group">
+              <label for="priceColor" class="form-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Price per Color Page (৳)
+              </label>
+              <input type="number" id="priceColor" name="priceColor" class="form-input" placeholder="e.g., 10.00" step="0.50" min="0" required>
+            </div>
+          </div>
+
+          <!-- Printer Description -->
+          <div class="form-group">
+            <label for="description" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              Printer Description
+            </label>
+            <textarea id="description" name="description" class="form-input" rows="4" placeholder="Describe your printer, its features, and any special instructions..." required></textarea>
+          </div>
+
+          <!-- Contact Phone -->
+          <div class="form-group">
+            <label for="contactPhone" class="form-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              Contact Phone
+            </label>
+            <input type="tel" id="contactPhone" name="contactPhone" class="form-input" placeholder="e.g., 01XXXXXXXXX" required>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="glass-button primary" style="width: 100%; padding: 1rem; font-size: 1rem; margin-top: 1rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Register Printer
+          </button>
+        </form>
+
+        <!-- Success Message (Hidden by default) -->
+        <div id="successMessage" style="display: none; margin-top: 2rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 12px; text-align: center;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--success); margin-bottom: 1rem;">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <h3 style="color: var(--success); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Printer Registered Successfully!</h3>
+          <p style="color: var(--theme-text-secondary); margin-bottom: 0;">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/router.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  
+  <script>
+    // Check authentication
+    if (!authManager.requireAuth()) {
+      // Will redirect to login if not authenticated
+    }
+
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      authManager.updateUI();
+
+      if (!authManager.isAuthenticated()) {
+        router.navigate('/pages/login.html');
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('printerRegisterForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const printerName = document.getElementById('printerName').value;
+      const brandModel = document.getElementById('brandModel').value;
+      const university = document.getElementById('university').value;
+      const hall = document.getElementById('hall').value;
+      const room = document.getElementById('room').value;
+      const location = `${university} - ${hall} ${room}`;
+
+      const printerType = document.getElementById('printerType').value;
+      const priceBWRaw = parseFloat(document.getElementById('priceBW').value || '0');
+      const priceColorRaw = parseFloat(document.getElementById('priceColor').value || '0');
+      
+      const capabilities = {
+        color: printerType === 'color' || printerType === 'both',
+        bw: printerType === 'bw' || printerType === 'both'
+      };
+
+      try {
+        await apiClient.registerPrinter({
+          name: printerName,
+          model: brandModel,
+          location,
+          pricePerPage: priceBWRaw,
+          priceColor: capabilities.color ? priceColorRaw : null,
+          capabilities
+        });
+
+        // After successful registration, refresh user profile to get the new role
+        const updatedUser = await apiClient.getUserProfile();
+        authManager.user = { ...authManager.user, ...updatedUser };
+        authManager.saveUser();
+        authManager.updateUI();
+        
+      } catch (error) {
+        alert(error.message || 'Failed to register printer.');
+        return;
+      }
+
+      // Hide form and show success message
+      document.getElementById('printerRegisterForm').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+
+      // Redirect to printer dashboard after 2 seconds
+      setTimeout(() => {
+        authManager.switchToRole('printer_owner');
+      }, 2000);
+    });
+
+    // Show/hide color price based on printer type
+    document.getElementById('printerType').addEventListener('change', function() {
+      const priceColorGroup = document.getElementById('priceColor').closest('.form-group');
+      const priceBWGroup = document.getElementById('priceBW').closest('.form-group');
+      
+      if (this.value === 'bw') {
+        priceColorGroup.style.display = 'none';
+        document.getElementById('priceColor').removeAttribute('required');
+      } else {
+        priceColorGroup.style.display = 'block';
+        document.getElementById('priceColor').setAttribute('required', 'required');
+      }
+
+      if (this.value === 'color') {
+        priceBWGroup.style.display = 'none';
+        document.getElementById('priceBW').removeAttribute('required');
+      } else {
+        priceBWGroup.style.display = 'block';
+        document.getElementById('priceBW').setAttribute('required', 'required');
+      }
+    });
+  </script>
+</body>
+</html>
